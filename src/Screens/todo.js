@@ -25,14 +25,14 @@ class Todo extends React.Component {
     }
     handleAdd = async() => {
         const todo = this.props.todo.todo
-        const { name } = this.state
+        const { title } = this.state
         const { category } = this.state
         this.props.handleAddTodo({
-            id: todo.legth + 1,
-            name,
-            complate: false,
+            title,
+            isDone: false,
             category
         })
+        //For Get back data to database
         await this.props.handleGetTodos()
     }
     handleEdit = async(id) => {
@@ -42,12 +42,20 @@ class Todo extends React.Component {
             title,
             category
         })
+        // const filter = this.props.todo.todo.map(function(item, index){
+
+        // })
+        // this.setState({
+        //     title: 
+        // })
+        //For Get back data to database
         await this.props.handleGetTodos()
     }
     handleDelete = async(id) => {
         this.props.handleDeleteTodo({
             id
         })
+        //For Get back data to database
         await this.props.handleGetTodos()
     }
     handleChecked = async(id) => {
@@ -66,14 +74,8 @@ class Todo extends React.Component {
                 done:true
             })
         }
+        //For Get back data to database
         await this.props.handleGetTodos()
-    }
-    filterData = () => {
-        if (this.props.todo.isLoading == false) {
-            const { todo } = this.props.todo
-            const todos = todo.slice(0, 10)
-            return todos
-        }
     }
     render() {
         return (
@@ -81,6 +83,11 @@ class Todo extends React.Component {
                 <View style={styles.formAdd}>
                     <TextInput style={styles.input}
                         placeholder='Input your text'
+                        onChangeText={(title)=>this.setState({title})}
+                    />
+                    <TextInput style={styles.input}
+                        placeholder='Category'
+                        onChangeText={(category)=>this.setState({category})}
                     />
                     <TouchableOpacity style={styles.buttonAdd}
                         onPress={()=> this.handleAdd()}
@@ -90,21 +97,21 @@ class Todo extends React.Component {
                 </View>
                 <Text style={styles.text}>Todo</Text>
                 <FlatList
-                    data={this.filterData()}
+                    data={this.props.todo.todo}
                     renderItem={({ item, index }) => (
                         <View
                             style={styles.todoItem}
                         >
-                            <CheckBox checked={item.completed}
+                            <CheckBox checked={item.isDone}
                             onPress={()=> this.handleChecked(item.id)}
                             />
                             <View>
                                 <Text style={styles.titleItem}>{item.title}</Text>
-                                <Text style={styles.categoryItem}>category</Text>
+                                <Text style={styles.categoryItem}>Category : {this.category}</Text>
                             </View>
                             <View>
-                                <Button title='Delete' onPress={()=> this.handleEdit(item.id)}/>
-                                <Button title='Edit' onPress={()=> this.handleDelete(item.id)}/>
+                                <Button title='Delete' onPress={()=> this.handleDelete(item.id)}/>
+                                <Button title='Edit' onPress={()=> this.handleEdit(item.id)}/>
                             </View>
                         </View>
                     )}
@@ -123,10 +130,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         handleGetTodos: () => dispatch(actionTodo.handleGetTodo()),
-        handleAddTodo: () => dispatch(actionTodo.handleAddTodo()),
-        handleEditTodo: () => dispatch(actionTodo.handleEditTodo()),
-        handleDeleteTodo: () => dispatch(actionTodo.handleDeleteTodo()),
-        handleChecked: () => dispatch(actionTodo.handleChecked())
+        handleAddTodo: (params) => dispatch(actionTodo.handleAddTodo(params)),
+        handleEditTodo: (params) => dispatch(actionTodo.handleEditTodo(params)),
+        handleDeleteTodo: (params) => dispatch(actionTodo.handleDeleteTodo(params)),
+        handleChecked: (params) => dispatch(actionTodo.handleChecked(params))
     }
 }
 

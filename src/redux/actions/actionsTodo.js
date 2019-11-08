@@ -6,7 +6,7 @@ export const handleGetTodo = () => ({
     type: types.GET_TODOS,
     payload: axios({
         method: 'get',
-        url: 'https://jsonplaceholder.typicode.com/todos'
+        url: 'https://apitodoslist.herokuapp.com/todos'
     })
 })
 
@@ -14,10 +14,11 @@ export const handleAddTodo = (params) => ({
     type: types.ADD_TODOS,
     payload: axios({
         method: 'post',
-        url: '',
+        url: 'https://apitodoslist.herokuapp.com/todos',
         data: {
             title: params.title,
-            category: params.category
+            category: params.category,
+            isDone: false
         }
     })
 })
@@ -26,7 +27,7 @@ export const handleEditTodo = (params) => ({
     type: types.EDIT_TODOS,
     payload: axios({
         method: 'patch',
-        url: '',
+        url: `https://apitodoslist.herokuapp.com/todo/${params.id}`,
         data: {
             title: params.title,
             category: params.category
@@ -38,7 +39,7 @@ export const handleDeleteTodo = (params) => ({
     type: types.DELETE_TODO,
     payload: axios({
         method: 'delete',
-        url: ''
+        url: `https://apitodoslist.herokuapp.com/todo/${params.id}`
     })
 })
 

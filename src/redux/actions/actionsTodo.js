@@ -43,13 +43,13 @@ export const handleDeleteTodo = (params) => ({
     })
 })
 
-export const handleChecked = (done) => ({
+export const handleChecked = (params) => ({
     type: types.CHECKED,
     payload: axios({
         method: 'patch',
-        url: '',
+        url: `https://apitodoslist.herokuapp.com/todo/checked/${params.id}`,
         data: {
-            isDone: done
+            isDone: params.done
         }
     })
 })

@@ -37,19 +37,14 @@ class Todo extends React.Component {
     }
     handleEdit = async(id) => {
         const { title, category } = this.state
-        this.props.handleEditTodo({
-            id,
-            title,
-            category
+        const filter =  this.props.todo.todo.filter(function(item, index){
+            const items = id == item.id
+            return items
         })
-        // const filter = this.props.todo.todo.map(function(item, index){
-
-        // })
-        // this.setState({
-        //     title: 
-        // })
-        //For Get back data to database
-        await this.props.handleGetTodos()
+        this.setState({
+            title: filter[0].title,
+            category: filter[0].category.toString()
+        })
     }
     handleDelete = async(id) => {
         this.props.handleDeleteTodo({
@@ -60,17 +55,19 @@ class Todo extends React.Component {
     }
     handleChecked = async(id) => {
         const {todo} = this.props.todo
-        const todos = todo.map(function(item, index){
+        const todos = todo.filter(function(item, index){
             const items = id == item.id
             return items 
         })
-        const checkedDone = todos[0].complete
+        const checkedDone = todos[0].isDone
         if(checkedDone == true){
             this.props.handleChecked({
+                id,
                 done: false
             })
         }else{
             this.props.handleChecked({
+                id,
                 done:true
             })
         }
@@ -82,10 +79,12 @@ class Todo extends React.Component {
             <View>
                 <View style={styles.formAdd}>
                     <TextInput style={styles.input}
+                        defaultValue={this.state.title}
                         placeholder='Input your text'
                         onChangeText={(title)=>this.setState({title})}
                     />
                     <TextInput style={styles.input}
+                        defaultValue={this.state.category}
                         placeholder='Category'
                         onChangeText={(category)=>this.setState({category})}
                     />
@@ -109,10 +108,8 @@ class Todo extends React.Component {
                                 <Text style={styles.titleItem}>{item.title}</Text>
                                 <Text style={styles.categoryItem}>Category : {this.category}</Text>
                             </View>
-                            <View>
-                                <Button title='Delete' onPress={()=> this.handleDelete(item.id)}/>
-                                <Button title='Edit' onPress={()=> this.handleEdit(item.id)}/>
-                            </View>
+                                <Button style={{height: 40}} title='Delete' onPress={()=> this.handleDelete(item.id)}/>
+                                <Button style={{height: 40}}  title='Edit' onPress={()=> this.handleEdit(item.id)}/>
                         </View>
                     )}
                 />

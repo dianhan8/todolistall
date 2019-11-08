@@ -33,11 +33,10 @@ export const styles = StyleSheet.create({
         marginTop: 10
     },
     formAdd:{
-        justifyContent: 'space-between',
     },
     titleItem:{
         marginLeft: 15,
         fontSize: 20,
-        width: 300
+        width: 200
     }
 })
